@@ -354,9 +354,6 @@ const DRAG_OPTIONS = {
 	dragClass: 'task-dragging',
 	delayOnTouchOnly: true,
 	delay: 1000,
-	// the board is wider than the viewport; sortable's default 30px edge zone is too thin to reach
-	// with a pointer that is still over a bucket, so the board would not scroll while dragging
-	scrollSensitivity: 100,
 } as const
 
 const MIN_SCROLL_HEIGHT_PERCENT = 0.25
