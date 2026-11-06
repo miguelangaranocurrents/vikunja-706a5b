@@ -25,6 +25,7 @@ import {BlockquoteWithCommentId} from './blockquoteWithCommentId'
 import {TaskLink, LINK_HTML_ATTRIBUTES} from './taskLink'
 import {createClipboardParser, fillRequiredContent, repairSliceContent} from './contentRepair'
 import {htmlHasFormatting} from './clipboardHtml'
+import {serializeSliceAsText} from './clipboardText'
 
 import Commands from './commands'
 import suggestionSetup from './suggestion'
@@ -285,6 +286,23 @@ export function createEditorExtensions(deps: EditorExtensionDeps): Extensions {
 		},
 	})
 
+	// Runs ahead of TipTap's default text serializer, which drops list markers.
+	const ClipboardListMarkers = Extension.create({
+		name: 'clipboardListMarkers',
+		priority: 1000,
+
+		addProseMirrorPlugins() {
+			return [
+				new Plugin({
+					key: new PluginKey('clipboardListMarkers'),
+					props: {
+						clipboardTextSerializer: slice => serializeSliceAsText(slice),
+					},
+				}),
+			]
+		},
+	})
+
 	return [
 		// Starterkit:
 		StarterKit.configure({
@@ -405,5 +423,6 @@ export function createEditorExtensions(deps: EditorExtensionDeps): Extensions {
 		EmojiExtension,
 
 		PasteHandler,
+		ClipboardListMarkers,
 	]
 }
